@@ -1,6 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib.animation import FuncAnimation
 
 # Joint Limit Configuration Parameters
@@ -109,10 +110,13 @@ class RRT:
 
 
     def animate_tree(self):
+        # Set up formatting for the movie files
+        Writer = matplotlib.animation.writers['ffmpeg']
+        writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+        
         fig, ax = plt.subplots()
         xdata, ydata = [], []
         ln, = plt.plot([], [], 'ro')
-
         def init():
             ax.set_xlim(*self.limits[0])
             ax.set_ylim(*self.limits[1])
@@ -129,8 +133,10 @@ class RRT:
                             init_func=init, blit=True)
         plt.show()
 
+        # ani.save('im.mp4', writer=writer)
 
-def main():
+
+def main():  
     init_config = Config([0.0]*NUM_DIMENSIONS)
     rrt = RRT(init_config)
 
